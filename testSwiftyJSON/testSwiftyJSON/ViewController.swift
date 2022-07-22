@@ -15,7 +15,8 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         DataManager.test_JSONSerialization()
-        DataManager.test_SwiftyJSON()        
+        DataManager.test_SwiftyJSON()
+		DataManager.test_SwiftyJSONWithNSDictionary()
     }
 
 

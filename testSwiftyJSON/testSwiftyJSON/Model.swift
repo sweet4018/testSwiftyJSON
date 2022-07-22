@@ -23,18 +23,18 @@ class DataManager {
     }
     
     static func test_SwiftyJSON() {
-		print("\(#function) start: \(Date())")
+		let startDate = Date().timeIntervalSince1970
         guard let data = createData() else { return }
         for _ in 0...count {
             for json in JSON(data: data).arrayValue {
                 let _ = Test(json: json)
             }
         }
-		print("\(#function) finish: \(Date())")
+		print("\(#function) spent time: \(Date().timeIntervalSince1970 - startDate)")
     }
     
     static func test_JSONSerialization() {
-		print("\(#function) start: \(Date())")
+		let startDate = Date().timeIntervalSince1970
         guard let data = createData() else { return }
         do {
             if let jsons = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: AnyObject]] {
@@ -43,12 +43,23 @@ class DataManager {
                         let _ = Test(object: json)
                     }
                 }
-				print("\(#function) finish: \(Date())")
+				print("\(#function) spent time: \(Date().timeIntervalSince1970 - startDate)")
             }
         } catch {
             print(error)
         }
     }
+
+	static func test_SwiftyJSONWithNSDictionary() {
+		let startDate = Date().timeIntervalSince1970
+		guard let data = createData() else { return }
+		for _ in 0...count {
+			for json in JSON(data: data).arrayValue {
+				let _ = Test(JSONWithNSDictionary: json)
+			}
+		}
+		print("\(#function) spent time: \(Date().timeIntervalSince1970 - startDate)")
+	}
 }
 
 struct Test {
@@ -66,4 +77,11 @@ struct Test {
         self.title = object["title"] as? String ?? ""
         self.completed = object["completed"] as? Bool ?? false
     }
+
+	init(JSONWithNSDictionary json: JSON) {
+		let dict = json.dictionaryObject!
+		self.id = dict["id"] as? Int ?? 0
+		self.title = dict["title"] as? String ?? ""
+		self.completed = dict["completed"] as? Bool ?? false
+	}
 }
