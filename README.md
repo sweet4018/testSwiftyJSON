@@ -105,6 +105,7 @@ test_SwiftyJSONWithNSDictionary() spent time: 1.12207
 另外那還有一個小技巧是 parse 走過的 node 要 cache 起來，之後好 reuse 。
 例如：
 ```swift
+❌
     init(json: JSON) {
         self.value1 = json["setting"]["value1"].string
         self.value2 = json["setting"]["value2"].string
@@ -115,6 +116,7 @@ test_SwiftyJSONWithNSDictionary() spent time: 1.12207
 
 好的做法應該是：
 ```swift
+✅
     init(json: JSON) {
         let setting = json["setting"]
         self.value1 = setting["value1"].string
